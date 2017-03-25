@@ -45,6 +45,8 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/ellcrys/util"
+
 	"golang.org/x/net/context"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/hpack"
@@ -312,6 +314,7 @@ func (t *http2Server) operateHeaders(frame *http2.MetaHeadersFrame, handle func(
 // traceCtx attaches trace to ctx and returns the new context.
 func (t *http2Server) HandleStreams(handle func(*Stream), traceCtx func(context.Context, string) context.Context) {
 	// Check the validity of client preface.
+	util.Printify(conn)
 	preface := make([]byte, len(clientPreface))
 	if _, err := io.ReadFull(t.conn, preface); err != nil {
 		grpclog.Printf("transport: http2Server.HandleStreams failed to receive the preface from client: %v", err)
